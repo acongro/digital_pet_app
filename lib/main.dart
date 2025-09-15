@@ -1,122 +1,184 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp()); // main entry point
 }
 
+// app bar, scaffold, text
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+  // root, constructor
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      // grab all common features with theme, navigate, title
+      home: DefaultTabController(
+        length: 4, // how many tabs
+        child: _TabsNonScrollableDemo(),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class _TabsNonScrollableDemo extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  __TabsNonScrollableDemoState createState() => __TabsNonScrollableDemoState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class __TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
+    with SingleTickerProviderStateMixin, RestorationMixin {
+  late TabController _tabController;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+  final RestorableInt tabIndex = RestorableInt(0);
+
+  @override
+  String get restorationId => 'tab_non_scrollable_demo';
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(tabIndex, 'tab_index');
+    _tabController.index = tabIndex.value;
+  }
+
+  @override
+  void initState() {
+    // lifecycle
+    super.initState();
+    _tabController = TabController(
+      initialIndex: 0,
+      length: 4,
+      vsync: this, // makes animation run smooth
+    );
+    _tabController.addListener(() {
+      setState(() {
+        tabIndex.value = _tabController.index;
+      });
     });
   }
 
   @override
+  void dispose() {
+    // used whenever you move, only load one tab at a time
+    _tabController.dispose(); // release all resources, prevent memory leaks
+    tabIndex.dispose();
+    super.dispose(); // ref parent class
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    // For the To do task hint: consider defining the widget and name of the tabs here
+    final tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'];
+
     return Scaffold(
+      // standard layout for screen
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        automaticallyImplyLeading: false,
+        title: Text('Tabs Demo'),
+        bottom: TabBar(
+          controller: _tabController, // highlight active tab
+          tabs: [for (final tab in tabs) Tab(text: tab)],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Hello',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.lightBlue,
+                  ),
+                ),
+                SizedBox(height: 15),
+                ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) {
+                        return AlertDialog(
+                          title: Text("Alert"),
+                          content: Text("This is an alert"),
+                          actions: [
+                            TextButton(
+                              child: Text("Close"),
+                              onPressed: () {
+                                Navigator.of(ctx).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Text("Show Alert"),
+                ),
+              ],
+            ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.network(
+                  'https://media.istockphoto.com/id/1463580205/photo/united-states-marines-boeing-f-a-18d-hornet-multirole-fighter-from-vmfa-225-vikings.jpg?s=612x612&w=0&k=20&c=oPI7IJBFPbL0oiUwZ9Gu55c0wIy3JxtdGwGg0-ZIkww=',
+                  width: 250,
+                  height: 250,
+                ),
+                SizedBox(height: 100),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 100),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Enter Text',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text('Button was pressed')));
+              },
+              child: Text('click'),
+            ),
+          ),
+          ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              Card(
+                child: ListTile(
+                  leading: Icon(Icons.star),
+                  title: Text('Item 1'),
+                  subtitle: Text('This is a colored in star'),
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  leading: Icon(Icons.star_border),
+                  title: Text('Item 2'),
+                  subtitle: Text('This is a star outline'),
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  leading: Icon(Icons.favorite),
+                  title: Text('Item 3'),
+                  subtitle: Text('This is a colored in heart'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
