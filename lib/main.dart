@@ -85,40 +85,24 @@ class __TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Hello',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.lightBlue,
-                  ),
+                Image.network(
+                  'https://media.istockphoto.com/id/1463580205/photo/united-states-marines-boeing-f-a-18d-hornet-multirole-fighter-from-vmfa-225-vikings.jpg?s=612x612&w=0&k=20&c=oPI7IJBFPbL0oiUwZ9Gu55c0wIy3JxtdGwGg0-ZIkww=',
+                  width: 250,
+                  height: 250,
                 ),
-                SizedBox(height: 15),
-                ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) {
-                        return AlertDialog(
-                          title: Text("Alert"),
-                          content: Text("This is an alert"),
-                          actions: [
-                            TextButton(
-                              child: Text("Close"),
-                              onPressed: () {
-                                Navigator.of(ctx).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: Text("Show Alert"),
+                const SizedBox(height: 16),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 100),
+                  child: Text(
+                    'Bark Bark”',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
               ],
             ),
           ),
+
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -128,54 +112,39 @@ class __TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
                   width: 250,
                   height: 250,
                 ),
-                SizedBox(height: 100),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 100),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Enter Text',
-                    ),
+                const SizedBox(height: 16),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 100),
+                  child: Text(
+                    'Meow',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16),
                   ),
                 ),
               ],
             ),
           ),
+
           Center(
-            child: ElevatedButton(
-              onPressed: () {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text('Button was pressed')));
-              },
-              child: Text('click'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.network(
+                  'https://media.istockphoto.com/id/1463580205/photo/united-states-marines-boeing-f-a-18d-hornet-multirole-fighter-from-vmfa-225-vikings.jpg?s=612x612&w=0&k=20&c=oPI7IJBFPbL0oiUwZ9Gu55c0wIy3JxtdGwGg0-ZIkww=',
+                  width: 250,
+                  height: 250,
+                ),
+                const SizedBox(height: 16),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 100),
+                  child: Text(
+                    'Moo',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
             ),
-          ),
-          ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              Card(
-                child: ListTile(
-                  leading: Icon(Icons.star),
-                  title: Text('Item 1'),
-                  subtitle: Text('This is a colored in star'),
-                ),
-              ),
-              Card(
-                child: ListTile(
-                  leading: Icon(Icons.star_border),
-                  title: Text('Item 2'),
-                  subtitle: Text('This is a star outline'),
-                ),
-              ),
-              Card(
-                child: ListTile(
-                  leading: Icon(Icons.favorite),
-                  title: Text('Item 3'),
-                  subtitle: Text('This is a colored in heart'),
-                ),
-              ),
-            ],
           ),
         ],
       ),
