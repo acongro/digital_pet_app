@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // grab all common features with theme, navigate, title
       home: DefaultTabController(
-        length: 4, // how many tabs
+        length: 3, // how many tabs
         child: _TabsNonScrollableDemo(),
       ),
     );
@@ -45,7 +45,7 @@ class __TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
     super.initState();
     _tabController = TabController(
       initialIndex: 0,
-      length: 4,
+      length: 3,
       vsync: this, // makes animation run smooth
     );
     _tabController.addListener(() {
@@ -66,7 +66,7 @@ class __TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
   @override
   Widget build(BuildContext context) {
     // For the To do task hint: consider defining the widget and name of the tabs here
-    final tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'];
+    final tabs = ['Dog', 'Cat', 'Cow'];
 
     return Scaffold(
       // standard layout for screen
@@ -94,7 +94,7 @@ class __TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 100),
                   child: Text(
-                    'Bark Bark”',
+                    'Bark Bark',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16),
                   ),
