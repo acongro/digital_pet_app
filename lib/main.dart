@@ -86,7 +86,7 @@ class __TabsNonScrollableDemoState extends State<_TabsNonScrollableDemo>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.network(
-                  'https://media.istockphoto.com/id/1463580205/photo/united-states-marines-boeing-f-a-18d-hornet-multirole-fighter-from-vmfa-225-vikings.jpg?s=612x612&w=0&k=20&c=oPI7IJBFPbL0oiUwZ9Gu55c0wIy3JxtdGwGg0-ZIkww=',
+                  'https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*',
                   width: 250,
                   height: 250,
                 ),
